@@ -7,11 +7,11 @@
 int main() {
   lucy::Server server;
 
-  server.Get("/test/:id/abc", [](std::string &response) {
+  server.get("/test/:id/abc", [](std::string &response) {
     response = "Abc";
   });
 
-  server.launch();
+  server.listen();
 
   return 0;
 }

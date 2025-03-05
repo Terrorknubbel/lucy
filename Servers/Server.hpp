@@ -27,8 +27,8 @@ private:
 public:
   Server();
   ~Server();
-  void launch();
-  void Get(const std::string& path, Handler handler);
+  void listen();
+  void get(const std::string& path, Handler handler);
 };
 }
 

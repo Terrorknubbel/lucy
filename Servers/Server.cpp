@@ -25,7 +25,7 @@ void lucy::Server::acceptor()
     read(new_socket, buffer, sizeof(buffer));
 }
 
-void lucy::Server::Get(const std::string& path, Handler handler)
+void lucy::Server::get(const std::string& path, Handler handler)
 {
   trie.insert("GET", path, handler);
 }
@@ -63,7 +63,7 @@ void lucy::Server::responder()
     close(new_socket);
 }
 
-void lucy::Server::launch()
+void lucy::Server::listen()
 {
     while (true) {
         std::cout << "Waiting for connection..." << std::endl;
