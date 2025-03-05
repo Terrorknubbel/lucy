@@ -38,12 +38,10 @@ void lucy::Server::handler()
   requestStream >> method >> path >> httpVersion;
 
   response_content = "404 Not Found";
-  if (method == "GET") {
-    std::unordered_map<std::string, std::string> params;
-    Handler *handler = trie.find(method, path);
-    if(handler) {
-      (*handler)(response_content);
-    }
+  std::unordered_map<std::string, std::string> params;
+  Handler *handler = trie.find(method, path);
+  if(handler) {
+    (*handler)(response_content);
   }
 }
 
