@@ -27,7 +27,7 @@ private:
 public:
   Server();
   ~Server();
-  void listen();
+  void listen(const int port, std::function<void()> callback);
   void get(const std::string& path, Handler handler);
 };
 }
