@@ -16,9 +16,9 @@ namespace lucy
 class Server
 {
 private:
-  ListeningSocket *socket;
+  ListeningSocket *listening_socket;
   char buffer[65536] = {0};
-  int new_socket;
+  int client_fd;
   void acceptor();
   void handler();
   void responder();

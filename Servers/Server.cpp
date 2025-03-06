@@ -12,15 +12,16 @@ lucy::Server::Server(){
 
 lucy::Server::~Server()
 {
-  close(new_socket);
+  close(client_fd);
 }
 
 void lucy::Server::acceptor()
 {
-  struct sockaddr_in address = socket->get_address();
+  struct sockaddr_in address = listening_socket->get_address();
   int address_length = sizeof(address);
-  new_socket = accept(socket->get_sock(), (struct sockaddr *)&address, (socklen_t *)&address_length);
-  read(new_socket, buffer, sizeof(buffer));
+  client_fd = accept(listening_socket->get_server_fd(), (struct sockaddr *)&address, (socklen_t *)&address_length);
+  read(client_fd, buffer, sizeof(buffer));
+  request = std::string(buffer);
 }
 
 void lucy::Server::get(const std::string& path, Handler handler)
@@ -55,16 +56,16 @@ void lucy::Server::responder()
     response_content;
 
   std::cout << response_content << std::endl;
-  write(new_socket, httpResponse.c_str(), httpResponse.size());
-  close(new_socket);
+  write(client_fd, httpResponse.c_str(), httpResponse.size());
+  close(client_fd);
 }
 
 void lucy::Server::listen(const int port, std::function<void()> callback)
 {
-  socket = new ListeningSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, port, INADDR_ANY, 10);
+  listening_socket = new ListeningSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, port, INADDR_ANY, 10);
+  callback();
 
   while (true) {
-    callback();
     acceptor();
     handler();
     responder();
