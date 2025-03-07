@@ -1,6 +1,4 @@
 #include "RouteTrie.hpp"
-#include <sstream>
-#include <iostream>
 
 lucy::RouteTrie::RouteTrie() {
   root = new TrieNode();

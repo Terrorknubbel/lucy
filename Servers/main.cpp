@@ -8,8 +8,8 @@ int main() {
   lucy::Server server;
   const int port = 80;
 
-  server.get("/test/:id/abc", [](std::string &response) {
-    response = "Abc";
+  server.get("/test/:id/abc", [](const lucy::Request& request, std::string& response) {
+    response = "Incoming request for " + request.path;
   });
 
   server.listen(port, []() {

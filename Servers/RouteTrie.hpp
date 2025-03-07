@@ -1,12 +1,13 @@
 #ifndef RouteTrie_hpp
 #define RouteTrie_hpp
 
+#include "Request.hpp"
 #include <unordered_map>
 #include <string>
 #include <functional>
 #include <vector>
 
-typedef std::function<void(std::string&)> Handler;
+typedef std::function<void(const lucy::Request&, std::string&)> Handler;
 
 namespace lucy
 {
