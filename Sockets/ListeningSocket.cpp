@@ -24,17 +24,6 @@ lucy::ListeningSocket::ListeningSocket(int domain, int service, int protocol, in
   }
 }
 
-int lucy::ListeningSocket::await_connection()
-{
-  int address_length = sizeof(address);
-  client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&address_length);
-  char buffer[65536] = {0};
-  read(client_fd, buffer, sizeof(buffer));
-  std::cout << client_fd << std::endl;
-  std::cout << buffer << std::endl;
-  return client_fd;
-}
-
 struct sockaddr_in lucy::ListeningSocket::get_address()
 {
   return address;
