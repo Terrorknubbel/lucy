@@ -1,11 +1,12 @@
 #include "Request.hpp"
+#include "RouteTrie.hpp"
 
-lucy::Request::Request() {
-}
+lucy::Request::Request() {}
 
-lucy::Request::Request(std::string raw_request) {
+lucy::Request::Request(std::string raw_request, RouteTrie &trie) {
   this->raw_request = raw_request;
   parse();
+  handler = trie.find(method, path);
 }
 
 void lucy::Request::parse() {

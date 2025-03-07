@@ -1,4 +1,5 @@
 #include "RouteTrie.hpp"
+#include "Request.hpp"
 
 lucy::RouteTrie::RouteTrie() {
   root = new TrieNode();
@@ -46,7 +47,7 @@ void lucy::RouteTrie::insert(const std::string& method, const std::string& path,
   node->handlers[method] = handler;
 }
 
-Handler* lucy::RouteTrie::find(const std::string& method, const std::string& requestPath) {
+lucy::Handler* lucy::RouteTrie::find(const std::string& method, const std::string& requestPath) {
   TrieNode* node = root;
   std::vector<std::string> parts = splitPath(requestPath);
   for (const std::string& part : parts) {

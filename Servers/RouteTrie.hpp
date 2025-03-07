@@ -7,11 +7,10 @@
 #include <functional>
 #include <vector>
 
-typedef std::function<void(const lucy::Request&, std::string&)> Handler;
-
 namespace lucy
 {
-class Server;
+class Request;
+typedef std::function<void(const Request&, std::string&)> Handler;
 
 class TrieNode {
 public:

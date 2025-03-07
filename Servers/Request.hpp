@@ -7,6 +7,7 @@
 
 namespace lucy
 {
+class RouteTrie;
 class Request;
 typedef std::function<void(const lucy::Request&, std::string&)> Handler;
 
@@ -17,7 +18,7 @@ private:
   std::string raw_request;
 public:
   Request();
-  Request(std::string raw_request);
+  Request(std::string raw_request, RouteTrie &trie);
   std::string method;
   std::string path;
   std::string httpVersion;

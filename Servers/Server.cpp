@@ -5,7 +5,6 @@
 #include <cstring>
 #include <unordered_map>
 #include <functional>
-#include "RequestHandler.hpp"
 
 lucy::Server::Server(){
   lucy::RouteTrie trie;
@@ -52,11 +51,10 @@ void lucy::Server::listen(const int port, std::function<void()> callback)
 {
   listening_socket = new ListeningSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, port, INADDR_ANY, 10);
   callback();
-  RequestHandler rq(trie);
 
   while (true) {
     acceptor();
-    request = rq.call(raw_request);
+    request = Request(raw_request, trie);
     responder();
   }
 
