@@ -3,12 +3,12 @@
 
 #include "../Sockets/ListeningSocket.hpp"
 #include "RouteTrie.hpp"
-#include "Request.hpp"
+#include "RespondHandler.hpp"
 #include <functional>
 
 namespace lucy
 {
-typedef std::function<void(const lucy::Request&, std::string&)> Handler;
+typedef std::function<void(const Request&, Response&)> Handler;
 class Server
 {
 private:
@@ -18,7 +18,7 @@ private:
   void acceptor();
   void responder();
   std::string raw_request;
-  std::string response_content;
+  std::string http_response;
   RouteTrie trie;
   Request request;
 public:

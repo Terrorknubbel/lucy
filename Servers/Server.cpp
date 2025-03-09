@@ -31,19 +31,7 @@ void lucy::Server::get(const std::string& path, Handler handler)
 
 void lucy::Server::responder()
 {
-  response_content = "404 Not Found";
-
-  if(request.handler) {
-    (*request.handler)(request, response_content);
-  }
-  std::string httpResponse =
-    "HTTP/1.1 200 OK\r\n"
-    "Content-Type: text/html\r\n"
-    "Content-Length: " + std::to_string(response_content.size()) + "\r\n"
-    "\r\n" +
-    response_content;
-
-  write(client_fd, httpResponse.c_str(), httpResponse.size());
+  write(client_fd, http_response.c_str(), http_response.size());
   close(client_fd);
 }
 
@@ -55,7 +43,9 @@ void lucy::Server::listen(const int port, std::function<void()> callback)
   while (true) {
     acceptor();
     request = Request(raw_request, trie);
+    http_response = RespondHandler(&request).call();
     responder();
+
   }
 
   delete listening_socket;

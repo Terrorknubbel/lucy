@@ -10,7 +10,7 @@
 namespace lucy
 {
 class Request;
-typedef std::function<void(const Request&, std::string&)> Handler;
+typedef std::function<void(const Request&, Response&)> Handler;
 
 class TrieNode {
 public:

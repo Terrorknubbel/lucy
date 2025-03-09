@@ -4,12 +4,13 @@
 #include <unordered_map>
 #include <functional>
 #include <sstream>
+#include "Response.hpp"
 
 namespace lucy
 {
 class RouteTrie;
 class Request;
-typedef std::function<void(const lucy::Request&, std::string&)> Handler;
+typedef std::function<void(const Request&, Response&)> Handler;
 
 class Request
 {
