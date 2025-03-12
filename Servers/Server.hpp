@@ -13,7 +13,7 @@ typedef std::function<void(const Request&, Response&)> Handler;
 class Server
 {
 private:
-  ListeningSocket *listening_socket;
+  ListeningSocket listening_socket;
   char buffer[65536] = {0};
   int client_fd;
   void acceptor();

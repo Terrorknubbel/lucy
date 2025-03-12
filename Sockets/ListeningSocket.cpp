@@ -1,6 +1,8 @@
 #include "ListeningSocket.hpp"
 #include <unistd.h>
 
+lucy::ListeningSocket::ListeningSocket() {}
+
 lucy::ListeningSocket::ListeningSocket(int domain, int service, int protocol, int port, u_long interface, int backlog)
 {
   address.sin_family = domain;

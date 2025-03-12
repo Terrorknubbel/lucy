@@ -14,6 +14,7 @@ private:
   int server_fd;
   int client_fd;
 public:
+  ListeningSocket();
   ListeningSocket(int domain, int service, int protocol, int port, u_long interface, int backlog);
   struct sockaddr_in get_address();
   int get_server_fd();

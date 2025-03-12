@@ -18,9 +18,9 @@ lucy::Server::~Server()
 
 void lucy::Server::acceptor()
 {
-  struct sockaddr_in address = listening_socket->get_address();
+  struct sockaddr_in address = listening_socket.get_address();
   int address_length = sizeof(address);
-  client_fd = accept(listening_socket->get_server_fd(), (struct sockaddr *)&address, (socklen_t *)&address_length);
+  client_fd = accept(listening_socket.get_server_fd(), (struct sockaddr *)&address, (socklen_t *)&address_length);
   read(client_fd, buffer, sizeof(buffer));
   raw_request = std::string(buffer);
 }
@@ -43,7 +43,7 @@ void lucy::Server::responder()
 
 void lucy::Server::listen(const int port, std::function<void()> callback)
 {
-  listening_socket = new ListeningSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, port, INADDR_ANY, 10);
+  listening_socket = ListeningSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, port, INADDR_ANY, 10);
   callback();
 
   while (true) {
@@ -53,6 +53,4 @@ void lucy::Server::listen(const int port, std::function<void()> callback)
     responder();
 
   }
-
-  delete listening_socket;
 }
