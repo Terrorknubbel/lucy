@@ -2,17 +2,7 @@
 #include "Request.hpp"
 
 lucy::RouteTrie::RouteTrie() {
-  root = new TrieNode();
-}
-
-lucy::RouteTrie::~RouteTrie() {
-  std::function<void(TrieNode*)> deleteNodes = [&](TrieNode* node) {
-    for (auto& [selector, child_node] : node->children) {
-      deleteNodes(child_node);
-    }
-    delete node;
-  };
-  deleteNodes(root);
+  root = std::make_unique<TrieNode>();
 }
 
 std::vector<std::string> lucy::RouteTrie::splitPath(const std::string& path) {
@@ -28,31 +18,31 @@ std::vector<std::string> lucy::RouteTrie::splitPath(const std::string& path) {
 }
 
 void lucy::RouteTrie::insert(const std::string& method, const std::string& path, Handler handler) {
-  lucy::TrieNode* node = root;
+  TrieNode* node = root.get();
   std::vector<std::string> parts = splitPath(path);
 
   for (const std::string& part : parts) {
     if (part[0] == ':') {
       if (!node->children.count("*")) {
-        node->children["*"] = new TrieNode();
+        node->children["*"] = std::make_unique<TrieNode>();
       }
-      node = node->children["*"];
+      node = node->children["*"].get();
     } else {
       if (!node->children.count(part)) {
-        node->children[part] = new TrieNode();
+        node->children[part] = std::make_unique<TrieNode>();
       }
-      node = node->children[part];
+      node = node->children[part].get();
     }
   }
   node->handlers[method] = handler;
 }
 
 lucy::Handler* lucy::RouteTrie::find(const std::string& method, const std::string& requestPath) {
-  TrieNode* node = root;
+  TrieNode* node = root.get();
   std::vector<std::string> parts = splitPath(requestPath);
   for (const std::string& part : parts) {
-    node = node->children.contains(part) ? node->children[part] :
-      node->children.contains("*") ? node->children["*"] :
+    node = node->children.contains(part) ? node->children[part].get() :
+      node->children.contains("*") ? node->children["*"].get() :
       nullptr;
 
     // No route found
