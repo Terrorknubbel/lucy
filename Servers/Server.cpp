@@ -7,7 +7,8 @@
 #include <functional>
 
 lucy::Server::Server(){
-  lucy::RouteTrie trie;
+  RouteTrie trie;
+  MiddlewareHandler middlewareHandler;
 }
 
 lucy::Server::~Server()
@@ -22,6 +23,11 @@ void lucy::Server::acceptor()
   client_fd = accept(listening_socket->get_server_fd(), (struct sockaddr *)&address, (socklen_t *)&address_length);
   read(client_fd, buffer, sizeof(buffer));
   raw_request = std::string(buffer);
+}
+
+void lucy::Server::use(Middleware middleware)
+{
+  middlewareHandler.add(middleware);
 }
 
 void lucy::Server::get(const std::string& path, Handler handler)
@@ -43,7 +49,7 @@ void lucy::Server::listen(const int port, std::function<void()> callback)
   while (true) {
     acceptor();
     request = Request(raw_request, trie);
-    http_response = RespondHandler(&request).call();
+    http_response = RespondHandler().call(request, middlewareHandler);
     responder();
 
   }

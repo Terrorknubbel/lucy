@@ -1,16 +1,18 @@
 #include "RespondHandler.hpp"
 
-lucy::RespondHandler::RespondHandler(const Request* request) {
-  this->request = request;
-}
+lucy::RespondHandler::RespondHandler() {}
 
-std::string lucy::RespondHandler::call() {
+std::string lucy::RespondHandler::call(const Request& request, const MiddlewareHandler& middlewareHandler) {
   Response response;
 
-  if(request->handler) {
-    (*request->handler)(*request, response);
-  } else {
-    notFoundHandler(*request, response);
+  middlewareHandler.call(request, response);
+
+  if(!response.ready_to_send) {
+    if(request.handler) {
+      (*request.handler)(request, response);
+    } else {
+      notFoundHandler(request, response);
+    }
   }
 
   std::string httpResponse =

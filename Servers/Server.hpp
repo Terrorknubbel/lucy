@@ -4,6 +4,7 @@
 #include "../Sockets/ListeningSocket.hpp"
 #include "RouteTrie.hpp"
 #include "RespondHandler.hpp"
+#include "MiddlewareHandler.hpp"
 #include <functional>
 
 namespace lucy
@@ -21,10 +22,12 @@ private:
   std::string http_response;
   RouteTrie trie;
   Request request;
+  MiddlewareHandler middlewareHandler;
 public:
   Server();
   ~Server();
   void listen(const int port, std::function<void()> callback);
+  void use(Middleware middleware);
   void get(const std::string& path, Handler handler);
 };
 }
