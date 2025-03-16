@@ -6,6 +6,9 @@
 
 void loggingMiddleware(const lucy::Request &req, lucy::Response &res, std::function<void()> next) {
   std::cout << "Request: " << req.method << " " << req.path << std::endl;
+  for (auto [key, value] : req.params) {
+    std::cout << "Param: " << key << " " << value << std::endl;
+  }
   next();
 }
 
