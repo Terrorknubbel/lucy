@@ -15,12 +15,20 @@ std::string lucy::RespondHandler::call(const Request& request, const MiddlewareH
     }
   }
 
-  std::string httpResponse =
-    "HTTP/1.1 " + std::to_string(response.status_code) + " OK\r\n"
-    "Content-Type: text/html\r\n"
-    "Content-Length: " + std::to_string(response.content.size()) + "\r\n"
-    "\r\n" +
-    response.content;
+  // Bei der HEAD-Methode wird die Content-Length befüllt, auch wenn der Content leer ist. Die Content-Length berechnen
+  // wir hier also nur dann, wenn sie nicht bereits gesetzt wurde.
+  if (response.headers["Content-Length"] == "0") {
+    response.headers["Content-Length"] = std::to_string(response.content.size());
+  }
+
+  std::string startLine = "HTTP/1.1 " + std::to_string(response.status_code) + " " + response.http_status_text + "\r\n";
+
+  std::string headers = "";
+  for (const auto& [key, value] : response.headers) {
+    headers += key + ": " + value + "\r\n";
+  }
+
+  std::string httpResponse = startLine + headers + "\r\n" + response.content;
 
   return httpResponse;
 }

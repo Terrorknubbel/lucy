@@ -6,10 +6,7 @@
 #include <unordered_map>
 #include <functional>
 
-lucy::Server::Server(){
-  RouteTrie trie;
-  MiddlewareHandler middlewareHandler;
-}
+lucy::Server::Server(){}
 
 lucy::Server::~Server()
 {

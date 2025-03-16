@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <functional>
 #include <sstream>
+#include <filesystem>
 #include "Response.hpp"
 
 namespace lucy
@@ -21,7 +22,7 @@ public:
   Request();
   Request(std::string raw_request, RouteTrie &trie);
   std::string method;
-  std::string path;
+  std::filesystem::path path;
   std::string httpVersion;
   std::unordered_map<std::string, std::string> headers;
   std::string body;
