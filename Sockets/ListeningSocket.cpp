@@ -3,8 +3,7 @@
 
 lucy::ListeningSocket::ListeningSocket() {}
 
-lucy::ListeningSocket::ListeningSocket(int domain, int service, int protocol, int port, u_long interface, int backlog)
-{
+lucy::ListeningSocket::ListeningSocket(int domain, int service, int protocol, int port, u_long interface, int backlog) {
   address.sin_family = domain;
   address.sin_port = htons(port);
   address.sin_addr.s_addr = htonl(interface);
@@ -26,12 +25,6 @@ lucy::ListeningSocket::ListeningSocket(int domain, int service, int protocol, in
   }
 }
 
-struct sockaddr_in lucy::ListeningSocket::get_address()
-{
-  return address;
-}
+struct sockaddr_in lucy::ListeningSocket::get_address() { return address; }
 
-int lucy::ListeningSocket::get_server_fd()
-{
-  return server_fd;
-}
+int lucy::ListeningSocket::get_server_fd() { return server_fd; }

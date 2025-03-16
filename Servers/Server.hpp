@@ -2,16 +2,14 @@
 #define Server_hpp
 
 #include "../Sockets/ListeningSocket.hpp"
-#include "RouteTrie.hpp"
-#include "RespondHandler.hpp"
 #include "MiddlewareHandler.hpp"
+#include "RespondHandler.hpp"
+#include "RouteTrie.hpp"
 #include <functional>
 
-namespace lucy
-{
-typedef std::function<void(const Request&, Response&)> Handler;
-class Server
-{
+namespace lucy {
+typedef std::function<void(const Request &, Response &)> Handler;
+class Server {
 private:
   ListeningSocket listening_socket;
   char buffer[65536] = {0};
@@ -23,13 +21,14 @@ private:
   RouteTrie trie;
   Request request;
   MiddlewareHandler middlewareHandler;
+
 public:
   Server();
   ~Server();
   void listen(const int port, std::function<void()> callback);
   void use(Middleware middleware);
-  void get(const std::string& path, Handler handler);
+  void get(const std::string &path, Handler handler);
 };
-}
+} // namespace lucy
 
 #endif /* Server_hpp */

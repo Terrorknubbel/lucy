@@ -24,7 +24,9 @@ void lucy::Request::parse() {
     if (std::getline(headerStream, key, ':')) {
       std::getline(headerStream, value);
       if (!key.empty() && !value.empty()) {
-        if (value[0] == ' ') value.erase(0, 1);
+        if (value[0] == ' ') {
+          value.erase(0, 1);
+        }
         headers[key] = value;
       }
     }

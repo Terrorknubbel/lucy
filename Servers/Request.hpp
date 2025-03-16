@@ -1,23 +1,22 @@
 #ifndef Request_hpp
 #define Request_hpp
 
-#include <unordered_map>
+#include "Response.hpp"
+#include <filesystem>
 #include <functional>
 #include <sstream>
-#include <filesystem>
-#include "Response.hpp"
+#include <unordered_map>
 
-namespace lucy
-{
+namespace lucy {
 class RouteTrie;
 class Request;
-typedef std::function<void(const Request&, Response&)> Handler;
+typedef std::function<void(const Request &, Response &)> Handler;
 
-class Request
-{
+class Request {
 private:
   void parse();
   std::string raw_request;
+
 public:
   Request();
   Request(std::string raw_request, RouteTrie &trie);
@@ -28,6 +27,6 @@ public:
   std::string body;
   Handler *handler;
 };
-}
+} // namespace lucy
 
 #endif /* Request_hpp */
